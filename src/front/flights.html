@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon - Flights</title>
+  <link rel="stylesheet" href="./src/index.css" />
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">HORIZON</a>
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link">Explore</a>
+        <a href="flights.html" class="nav-link active">Find Flights</a>
+        <a href="bookings.html" class="nav-link">My Bookings</a>
+        <a href="login.html" class="nav-link nav-link-logout">LOGOUT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="flex: 1; padding-bottom: 64px;">
+    <div class="flight-widget">
+      <h1 class="flight-widget-title">Curate Your Departure</h1>
+
+      <div class="flight-inputs">
+        <style>
+          .f-error {
+            color: red;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            display: none;
+          }
+        </style>
+        <div class="f-input-group">
+          <label class="f-label">DEPARTURE</label>
+          <div class="f-field" style="position: relative;">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V6m0 0l-8 8m8-8l8 8" />
+            </svg>
+            <input type="text" id="flightFrom" placeholder="City or Country" autocomplete="off" />
+            <div class="autocomplete-dropdown" id="fromDropdown"></div>
+          </div>
+          <div id="flightFromError" class="f-error"></div>
+        </div>
+
+        <div class="f-input-group">
+          <label class="f-label">DESTINATION</label>
+          <div class="f-field" style="position: relative;">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v13m0 0l-8-8m8 8l8-8" />
+            </svg>
+            <input type="text" id="flightTo" placeholder="City or Country" autocomplete="off" />
+            <div class="autocomplete-dropdown" id="toDropdown"></div>
+          </div>
+          <div id="flightToError" class="f-error"></div>
+        </div>
+
+        <div class="f-input-group">
+          <label class="f-label">DATES</label>
+          <div class="f-field" style="position: relative;">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <input type="text" id="flightDate" placeholder="Select Date" readonly style="cursor: pointer;" />
+            <div class="calendar-dropdown" id="calendarDropdown"></div>
+          </div>
+          <div id="flightDateError" class="f-error"></div>
+        </div>
+
+        <div>
+          <button id="flightSearchBtn" class="btn-f-search">
+            Search
+            <svg style="width: 16px; height: 16px; margin-left: 4px;" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 id="results-title" style="font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin-bottom: 32px;">
+      </h2>
+      <div id="flights-container">
+      </div>
+    </div>
+  </main>
+
+  <script src="./src/flights.js" type="module"></script>
+</body>
+
+</html>

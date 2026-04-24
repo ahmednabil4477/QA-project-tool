@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon - Sign Up</title>
+  <link rel="stylesheet" href="./src/index.css" />
+</head>
+
+<body style="background-color: #f9fafb;">
+  <div class="split-layout">
+
+    <div class="split-left">
+      <img src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?q=80&w=1500&auto=format&fit=crop"
+        class="bg" />
+      <a href="index.html" class="logo-abs">HORIZON</a>
+      <div class="split-left-content">
+        <h1 class="split-left-title">The world is <br />yours to curate.</h1>
+        <p class="split-left-p" style="max-width: 500px;">Join an exclusive community of modern explorers. Access
+          bespoke itineraries and hidden gems curated for the discerning traveler.</p>
+      </div>
+    </div>
+
+
+    <div class="split-right" style="background-color: transparent;">
+      <div style="margin-bottom: 48px; display: block;">
+        <style>
+          @media(min-width: 1024px) {
+            .mobile-logo {
+              display: none;
+            }
+          }
+        </style>
+        <div class="mobile-logo"><a href="index.html" class="logo" style="color: #111827;">HORIZON</a></div>
+      </div>
+
+      <div class="auth-box">
+        <div style="margin-bottom: 32px;">
+          <h2 class="auth-title">Create Account</h2>
+          <p class="auth-subtitle" style="margin-bottom: 0;">Start your journey into luxury travel today.</p>
+        </div>
+
+        <style>
+          .form-card {
+            background-color: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+          }
+
+          .form-line {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            position: relative;
+          }
+
+          .form-line:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+          }
+
+          .f-line-label {
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: #9ca3af;
+            letter-spacing: 0.1em;
+            display: block;
+            margin-bottom: 4px;
+          }
+
+          .form-line input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 4px 0;
+            background: transparent;
+            color: #111827;
+            font-weight: 500;
+            font-size: 1rem;
+          }
+
+          .form-line input::placeholder {
+            color: #d1d5db;
+          }
+
+          .form-line svg {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 16px;
+            height: 16px;
+            color: #9ca3af;
+          }
+
+          .error-msg {
+            color: red;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            display: none;
+          }
+        </style>
+
+        <div class="form-card">
+          <form id="registerForm">
+            <div class="form-line">
+              <label class="f-line-label">FIRST NAME</label>
+              <input type="text" id="firstName" placeholder="John" />
+              <div id="firstNameError" class="error-msg"></div>
+            </div>
+            <div class="form-line">
+              <label class="f-line-label">LAST NAME</label>
+              <input type="text" id="lastName" placeholder="Doe" />
+              <div id="lastNameError" class="error-msg"></div>
+            </div>
+            <div class="form-line">
+              <label class="f-line-label">EMAIL ADDRESS</label>
+              <input type="text" id="email" placeholder="curator@horizon.travel" />
+              <div id="emailError" class="error-msg"></div>
+            </div>
+            <div class="form-line">
+              <label class="f-line-label">PASSWORD</label>
+              <input type="password" id="password" placeholder="•••••••••••" style="padding-right: 24px;" />
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              <div id="passwordError" class="error-msg"></div>
+            </div>
+            <div class="form-line">
+              <label class="f-line-label">CONFIRM PASSWORD</label>
+              <input type="password" id="confirmPassword" placeholder="•••••••••••" style="padding-right: 24px;" />
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              <div id="confirmPasswordError" class="error-msg"></div>
+            </div>
+          </form>
+        </div>
+
+        <div id="generalError" class="error-msg" style="margin-bottom: 8px; text-align: center;"></div>
+        <button type="button" id="registerBtn" class="btn-primary" style="margin-bottom: 32px;">
+          CREATE ACCOUNT
+        </button>
+
+        <div
+          style="position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 32px;">
+          <div style="position: absolute; left: 0; right: 0; border-top: 1px solid var(--border-color);"></div>
+          <span
+            style="position: relative; background-color: var(--bg-color); padding: 0 16px; font-size: 0.75rem; color: #9ca3af; font-weight: 500; letter-spacing: 0.1em;">OR</span>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 40px;">
+          <span style="color: var(--text-muted);">Already have an account? </span>
+          <a href="login.html" style="color: var(--primary-color); font-weight: 700;">Login</a>
+        </div>
+
+        <p
+          style="text-align: center; font-size: 0.625rem; color: #9ca3af; max-width: 320px; line-height: 1.6; margin: 0 auto;">
+          By joining HORIZON, you agree to our Terms of Service and acknowledge our Privacy Policy.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('registerBtn').addEventListener('click', async () => {
+
+      document.querySelectorAll('.error-msg').forEach(el => {
+        el.innerText = '';
+        el.style.display = 'none';
+      });
+
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      let isValid = true;
+
+      const showError = (id, msg) => {
+        const el = document.getElementById(id);
+        el.innerText = msg;
+        el.style.display = 'block';
+        isValid = false;
+      };
+
+      if (!firstName) showError('firstNameError', 'This field is required');
+      if (!lastName) showError('lastNameError', 'This field is required');
+      if (!email) showError('emailError', 'This field is required');
+      if (!password) showError('passwordError', 'This field is required');
+      if (!confirmPassword) showError('confirmPasswordError', 'This field is required');
+
+      if (!isValid) return;
+
+
+      const nameRegex = /^[a-zA-Z\s]+$/;
+      if (!nameRegex.test(firstName)) {
+        showError('firstNameError', 'Only alphabetic characters are allowed');
+      } else if (firstName.length < 2 || firstName.length > 50) {
+        showError('firstNameError', 'Name should be between 2 and 50 characters');
+      }
+
+      if (!nameRegex.test(lastName)) {
+        showError('lastNameError', 'Only alphabetic characters are allowed');
+      } else if (lastName.length < 2 || lastName.length > 50) {
+        showError('lastNameError', 'Name should be between 2 and 50 characters');
+      }
+
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showError('emailError', 'Invalid email format');
+      }
+
+
+      if (password.length < 8) {
+        showError('passwordError', 'password cannot be less than 8 characters');
+      } else {
+        const hasLower = /[a-z]/.test(password);
+        const hasUpper = /[A-Z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        if (!hasLower || !hasUpper || !hasNumber || !hasSpecial) {
+          showError('passwordError', 'password should have one small letter,one capital letter,one number and one special character');
+        }
+      }
+
+
+      if (password !== confirmPassword) {
+        showError('confirmPasswordError', "password doesn't match");
+      }
+
+      if (!isValid) return;
+
+
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+      if (users.find(u => u.email === email)) {
+        showError('generalError', 'Email already has an account');
+        return;
+      }
+
+      const newUser = {
+        id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 2,
+        firstName,
+        lastName,
+        email,
+        password,
+        role: 'user',
+        registrationDate: new Date().toISOString()
+      };
+
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+
+</html>

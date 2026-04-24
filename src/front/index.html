@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon - Explore</title>
+  <link rel="stylesheet" href="./src/index.css" />
+</head>
+
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">HORIZON</a>
+
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link active">Explore</a>
+        <a href="flights.html" class="nav-link">Find Flights</a>
+        <a href="bookings.html" class="nav-link">My Bookings</a>
+        <a href="login.html" class="nav-link nav-link-logout">LOGOUT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container explore-main">
+    <div class="hero-section">
+      <h1 class="hero-title">Curated Horizons</h1>
+      <p class="hero-subtitle">Select a territory to begin your bespoke journey into the heart of world heritage.</p>
+
+      <div class="filter-tags">
+        <button class="filter-tag active"><span class="dot"></span>Italy</button>
+        <button class="filter-tag">France</button>
+        <button class="filter-tag">Egypt</button>
+      </div>
+    </div>
+
+    <div class="grid-3" id="destinations-container">
+    </div>
+    <div style="padding-top: 64px; border-top: 1px solid var(--border-color); margin-top: 64px;">
+      <h2 class="section-title" style="margin-top: 0">Voices of the Horizon</h2>
+      <div class="grid-3" id="testimonials-container">
+      </div>
+    </div>
+  </main>
+
+  <script src="./src/main.js" type="module"></script>
+</body>
+
+</html>

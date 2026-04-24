@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon - Login</title>
+  <link rel="stylesheet" href="./src/index.css" />
+</head>
+
+<body style="background-color: white;">
+  <div class="split-layout">
+    <div class="split-left">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1500&auto=format&fit=crop"
+        class="bg" />
+      <a href="index.html" class="logo-abs">HORIZON</a>
+      <div class="split-left-content">
+        <h1 class="split-left-title">Explore the <br /><span style="color: #93c5fd;">Unseen World.</span></h1>
+        <p class="split-left-p">Every journey is a curated editorial experience. Step back into your global diary.</p>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="display: flex; margin-left: 12px;">
+            <img
+              style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid white; margin-left: -12px; position: relative; z-index: 3;"
+              src="https://reqres.in/img/faces/7-image.jpg" />
+            <img
+              style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid white; margin-left: -12px; position: relative; z-index: 2;"
+              src="https://reqres.in/img/faces/8-image.jpg" />
+            <img
+              style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid white; margin-left: -12px; position: relative; z-index: 1;"
+              src="https://reqres.in/img/faces/9-image.jpg" />
+          </div>
+          <span style="font-size: 0.875rem; font-weight: 500; color: white; letter-spacing: 0.1em;">JOIN 12K+ TRAVEL
+            CURATORS</span>
+        </div>
+      </div>
+    </div>
+    <div class="split-right">
+      <div style="margin-bottom: 48px; display: block;">
+        <style>
+          @media(min-width: 1024px) {
+            .mobile-logo {
+              display: none;
+            }
+          }
+        </style>
+        <div class="mobile-logo"><a href="index.html" class="logo" style="color: #111827;">HORIZON</a></div>
+      </div>
+
+      <div class="auth-box">
+        <div>
+          <h2 class="auth-title">Welcome Back</h2>
+          <p class="auth-subtitle">Please enter your credentials to access your travels.</p>
+        </div>
+
+        <style>
+          .error-msg {
+            color: red;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            display: none;
+          }
+        </style>
+        <form id="loginForm">
+          <div class="input-group">
+            <label class="input-label">EMAIL ADDRESS</label>
+            <div style="position: relative;">
+              <input type="text" id="email" placeholder="name@agency.com" class="input-field"
+                style="padding-right: 48px;" />
+              <svg
+                style="width: 20px; height: 20px; color: #9ca3af; position: absolute; right: 16px; top: 50%; transform: translateY(-50%);"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div id="emailError" class="error-msg"></div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">PASSWORD</label>
+            <div style="position: relative;">
+              <input type="password" id="password" placeholder="••••••••" class="input-field"
+                style="padding-right: 48px;" />
+              <svg
+                style="width: 20px; height: 20px; color: #9ca3af; position: absolute; right: 16px; top: 50%; transform: translateY(-50%);"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <div id="passwordError" class="error-msg"></div>
+          </div>
+
+          <div id="generalError" class="error-msg" style="margin-bottom: 8px; text-align: center;"></div>
+          <button type="button" id="loginBtn" class="btn-primary" style="margin-top: 16px;">
+            SIGN IN
+          </button>
+        </form>
+
+        <div class="auth-switch">
+          <span>New to the horizon?</span>
+          <a href="signup.html">Create an Account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      document.querySelectorAll('.error-msg').forEach(el => {
+        el.innerText = '';
+        el.style.display = 'none';
+      });
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      let isValid = true;
+
+      const showError = (id, msg) => {
+        const el = document.getElementById(id);
+        el.innerText = msg;
+        el.style.display = 'block';
+        isValid = false;
+      };
+
+      if (!email) showError('emailError', 'This field is required');
+      if (!password) showError('passwordError', 'This field is required');
+
+      if (!isValid) return;
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showError('emailError', 'Invalid email format');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+      if (!users.find(u => u.email === 'admin@horizon.com')) {
+        users.push({
+          id: 1,
+          email: 'admin@horizon.com',
+          password: 'admin',
+          firstName: 'Jack',
+          lastName: 'Admin',
+          role: 'admin',
+          registrationDate: new Date().toISOString()
+        });
+      }
+
+
+      if (!users.find(u => u.email === 'user@horizon.com')) {
+        users.push({
+          id: 2,
+          email: 'user@horizon.com',
+          password: 'user123',
+          firstName: 'Elena',
+          lastName: 'Rossi',
+          role: 'user',
+          registrationDate: new Date().toISOString()
+        });
+      }
+
+      localStorage.setItem('users', JSON.stringify(users));
+
+      const user = users.find(u => u.email === email && u.password === password);
+
+      if (user) {
+        localStorage.setItem('token', 'mock-jwt-token-' + user.id);
+
+
+        const userToSave = { ...user };
+        delete userToSave.password;
+
+        localStorage.setItem('user', JSON.stringify(userToSave));
+
+        if (user.role === 'admin') {
+          window.location.href = 'admin-users.html';
+        } else {
+          window.location.href = 'index.html';
+        }
+      } else {
+        showError('generalError', 'invalid email or password');
+      }
+    });
+  </script>
+</body>
+
+</html>

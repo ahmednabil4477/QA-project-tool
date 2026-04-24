@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon - My Bookings</title>
+  <link rel="stylesheet" href="./src/index.css" />
+</head>
+
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">HORIZON</a>
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link">Explore</a>
+        <a href="flights.html" class="nav-link">Find Flights</a>
+        <a href="bookings.html" class="nav-link active">My Bookings</a>
+        <a href="login.html" class="nav-link nav-link-logout">LOGOUT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="profile-section">
+      <div class="profile-info">
+        <h1 class="profile-name">Julian Vane</h1>
+        <span class="profile-id">ID: HZ-9920-LUXE</span>
+      </div>
+    </div>
+
+    <div class="bookings-header">
+      <h2 class="bookings-section-title">Past Bookings</h2>
+      <span class="bookings-filter">Filter by Year ▾</span>
+    </div>
+
+    <div class="bookings-list" id="bookings-container">
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="review-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">
+        <svg style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h3 class="modal-title">Share Your Experience</h3>
+      <p class="modal-subtitle">How was your experience using <strong>Horizon ?</strong></p>
+
+      <span class="modal-rating-label">OVERALL RATING</span>
+      <div class="modal-stars" id="star-container">
+      </div>
+
+      <span class="modal-rating-label" style="text-align: left;">DETAILED FEEDBACK</span>
+      <textarea class="modal-textarea"
+        placeholder="Describe what you liked the most about the website......."></textarea>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-submit" onclick="submitReview()">Submit Review</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./src/bookings.js" type="module"></script>
+</body>
+
+</html>
