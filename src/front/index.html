@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon - Gallery</title>
+  <meta name="description" content="Explore curated travel destinations across Italy, France, Egypt, Japan and Greece with Horizon." />
+  <link rel="stylesheet" href="/src/css/index.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">HORIZON</a>
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link active">Gallery</a>
+        <a href="flights.html" class="nav-link">Find Flights</a>
+        <a href="bookings.html" class="nav-link">My Bookings</a>
+        <a href="login.html" class="nav-link">SIGN IN</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Explore Content -->
+  <main class="container explore-main">
+    <!-- Hero Header -->
+    <div class="hero-section">
+      <h1 class="hero-title">Curated Horizons</h1>
+      <p class="hero-subtitle">Select a territory to begin your bespoke journey into the heart of world heritage.</p>
+
+      <!-- Country Tabs – injected dynamically -->
+      <div class="filter-tags" id="country-tabs">
+        <!-- Injected via Script -->
+      </div>
+    </div>
+
+    <!-- Destinations Carousel -->
+    <div style="position: relative;">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <button class="carousel-btn" id="dest-prev" style="flex-shrink: 0;">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div style="flex: 1; overflow: hidden;">
+          <div id="destinations-track" style="display: flex; gap: 24px; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);">
+            <!-- Injected via Script -->
+          </div>
+        </div>
+        <button class="carousel-btn" id="dest-next" style="flex-shrink: 0;">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Voices / Testimonials -->
+    <div style="padding-top: 64px; border-top: 1px solid var(--border-color); margin-top: 64px; margin-bottom: 64px;">
+      <h2 class="section-title" style="margin-top: 0; text-align: center;">Voices of the Horizon</h2>
+
+      <div style="display: flex; align-items: center; gap: 24px; margin-top: 48px;">
+        <button class="carousel-btn" onclick="prevReview()" style="flex-shrink: 0;">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div style="flex: 1; overflow: hidden; padding: 16px 0;">
+          <div id="testimonials-container" class="carousel-track">
+            <!-- Injected via Script -->
+          </div>
+        </div>
+        <button class="carousel-btn" onclick="nextReview()" style="flex-shrink: 0;">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script src="/src/js/main.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  firstName String?
+  lastName  String?
+  email     String    @unique
+  password  String
+  role      String    @default("user")
+  bookings  Booking[] 
+  reviews   Review[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Destination {
+  id          Int       @id @default(autoincrement())
+  name        String
+  country     String
+  description String?
+  cost        Float?
+  images      String?
+  rating      Float?
+  
+  flights     Flight[]
+  reviews     Review[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Flight {
+  id              Int         @id @default(autoincrement())
+  airlineName     String
+  departureCity   String
+  arrivalCity     String
+  departureTime   DateTime
+  arrivalTime     DateTime
+  price           Float
+  durationMinutes Int?
+  
+  destinationId   Int
+  destination     Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  
+  bookings        Booking[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Booking {
+  id          Int      @id @default(autoincrement())
+  bookingDate DateTime @default(now())
+  status      String   @default("pending")
+  
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  flightId    Int
+  flight      Flight   @relation(fields: [flightId], references: [id], onDelete: Cascade)
+  
+  passengers  Passenger[]
+  payment     Payment?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Passenger {
+  id             Int      @id @default(autoincrement())
+  fullName       String
+  passportNumber String
+  dateOfBirth    String
+  
+  bookingId      Int
+  booking        Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id             Int      @id @default(autoincrement())
+  cardNumber     String
+  cardholderName String
+  expiryDate     String
+  cvv            String
+  status         String   @default("completed")
+  
+  bookingId      Int      @unique
+  booking        Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id            Int         @id @default(autoincrement())
+  comment       String
+  rating        Float
+  
+  userId        Int
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  destinationId Int
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}

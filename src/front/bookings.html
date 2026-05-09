@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon - My Bookings</title>
+  <link rel="stylesheet" href="/src/css/index.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">HORIZON</a>
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link">Gallery</a>
+        <a href="flights.html" class="nav-link">Find Flights</a>
+        <a href="bookings.html" class="nav-link active">My Bookings</a>
+        <a href="login.html" class="nav-link">SIGN IN</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="bookings-main-content">
+    <!-- Profile Header -->
+    <div class="profile-section" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; padding: 64px 0 32px; border-bottom: 1px solid var(--border-color); margin-bottom: 48px; width: 100%;">
+      <div class="profile-info" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; width: 100%;">
+        <span class="t-badge-dark" id="user-id-badge" style="margin-bottom: 16px; display: inline-block;">ID: HZ-USER</span>
+        <h1 class="profile-name" id="user-full-name" style="text-align: left; margin: 0 0 8px 0;">User Name</h1>
+        <p id="user-email-text" class="profile-email" style="text-align: left; margin: 0;">user@email.com</p>
+      </div>
+    </div>
+
+    <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 24px; text-align: left; width: 100%;">Past Bookings</h2>
+    
+    <!-- Bookings List -->
+    <div class="bookings-list" id="bookings-container">
+      <!-- Injected via Script -->
+    </div>
+  </main>
+
+  <!-- Share Experience Modal -->
+  <div class="modal-overlay" id="review-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">
+        <svg style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+      <h3 class="modal-title">Share Your Experience</h3>
+      <p class="modal-subtitle">How was your experience using <strong>Horizon ?</strong></p>
+      
+      <span class="modal-rating-label">OVERALL RATING</span>
+      <div class="modal-stars" id="star-container">
+        <!-- Stars injected via script -->
+      </div>
+      
+      <span class="modal-rating-label" style="text-align: left;">DETAILED FEEDBACK</span>
+      <textarea class="modal-textarea" id="review-comment" placeholder="Describe what you liked the most about the website......."></textarea>
+      
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-submit" onclick="submitReview()">Submit Review</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/src/js/bookings.js" type="module"></script>
+</body>
+</html>

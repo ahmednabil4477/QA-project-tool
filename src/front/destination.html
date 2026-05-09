@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon - Destination</title>
+  <meta name="description" content="Explore this exclusive destination with Horizon – curated luxury travel." />
+  <link rel="stylesheet" href="/src/css/index.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">HORIZON</a>
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link">Gallery</a>
+        <a href="flights.html" class="nav-link">Find Flights</a>
+        <a href="bookings.html" class="nav-link">My Bookings</a>
+        <a href="login.html" class="nav-link">SIGN IN</a>
+      </nav>
+    </div>
+  </header>
+
+  <main style="width: 100%;">
+    <!-- Hero Section – filled by JS -->
+    <div class="dest-hero">
+      <img id="dest-bg" src="" alt="" class="dest-hero-bg" />
+      <div class="dest-hero-overlay"></div>
+      <div class="container dest-hero-content">
+        <span class="dest-tag" id="dest-country"></span>
+        <h1 class="dest-main-title" id="dest-title"></h1>
+        <p class="dest-sub-title" id="dest-desc"></p>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="container">
+      <div class="dest-grid">
+
+        <!-- Left: Text + Visual Cards -->
+        <div class="dest-text" style="grid-column: 1 / 2;">
+          <h2>The Horizon Experience</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;">
+            <p id="dest-body-p1"></p>
+            <p id="dest-body-p2"></p>
+          </div>
+
+          <div class="visual-cards" id="visual-cards">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Right: Booking Sidebar -->
+        <div style="grid-column: 1 / -1; margin-top: 20px;">
+          <div class="dest-sidebar-wrapper">
+            <div class="dest-sidebar">
+              <h3>Plan Your Escape</h3>
+              <div id="flights-list" style="margin-bottom:16px;"></div>
+              <button class="btn-primary" id="book-flight-btn">
+                Book Flight
+                <svg style="width:20px;height:20px;margin-left:8px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
+              <div class="dest-sidebar-footer">SECURE CHECKOUT • 24/7 CONCIERGE</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="/src/js/destination.js" type="module"></script>
+</body>
+</html>
