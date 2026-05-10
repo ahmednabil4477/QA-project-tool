@@ -31,14 +31,25 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
+        // First check if it's an Admin
+        const admin = await prisma.admin.findUnique({ where: { email } });
+        if (admin) {
+            const isValid = bcrypt.compareSync(password, admin.password);
+            if (!isValid) return res.status(401).json({ message: "Invalid password" });
+            
+            const token = jwt.sign({ id: admin.id, email: admin.email, role: 'admin' }, SECRET_KEY, { expiresIn: '24h' });
+            return res.json({ message: "Login successful", token, user: { id: admin.id, firstName: "Admin", lastName: "", email: admin.email, role: 'admin' } });
+        }
+
+        // If not Admin, check User
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user) return res.status(404).json({ message: "User not found" });
 
         const isValid = bcrypt.compareSync(password, user.password);
         if (!isValid) return res.status(401).json({ message: "Invalid password" });
 
-        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY, { expiresIn: '24h' });
-        res.json({ message: "Login successful", token, user: { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role } });
+        const token = jwt.sign({ id: user.id, email: user.email, role: 'user' }, SECRET_KEY, { expiresIn: '24h' });
+        res.json({ message: "Login successful", token, user: { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: 'user' } });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
