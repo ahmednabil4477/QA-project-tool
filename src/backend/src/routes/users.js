@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', verifyAdmin, async (req, res) => {
     try {
         const users = await prisma.user.findMany({
-            select: { id: true, firstName: true, lastName: true, email: true, role: true }
+            select: { id: true, firstName: true, lastName: true, email: true }
         });
         res.json(users);
     } catch (err) {
@@ -21,7 +21,7 @@ router.get('/:id', verifyToken, async (req, res) => {
     try {
         const user = await prisma.user.findUnique({
             where: { id: parseInt(req.params.id) },
-            select: { id: true, firstName: true, lastName: true, email: true, role: true }
+            select: { id: true, firstName: true, lastName: true, email: true }
         });
         if (!user) return res.status(404).json({ message: "User not found" });
         res.json(user);
@@ -55,7 +55,7 @@ router.put('/:id', verifyToken, async (req, res) => {
                 ...(lastName && { lastName }),
                 ...(email && { email })
             },
-            select: { id: true, firstName: true, lastName: true, email: true, role: true }
+            select: { id: true, firstName: true, lastName: true, email: true }
         });
         res.json(updatedUser);
     } catch (err) {

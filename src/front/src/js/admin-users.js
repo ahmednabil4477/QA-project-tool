@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </td>
         <td>
-          <span class="t-date">${new Date(u.createdAt).toLocaleDateString()}</span>
+          <span class="t-date">${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A'}</span>
         </td>
         <td style="text-align: right;">
           <button class="t-action-btn" onclick="openAdminModal('delete-user-modal', ${u.id})" style="display:inline-flex;">
