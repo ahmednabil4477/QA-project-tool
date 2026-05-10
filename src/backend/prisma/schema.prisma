@@ -18,7 +18,8 @@ model User {
   id               Int       @id @default(autoincrement()) @map("user_id")
   email            String    @unique
   password         String
-  fullName         String    @map("full_name")
+  firstName        String    @map("first_name")
+  lastName         String    @map("last_name")
   bookings         Booking[]
   reviews          Review[]
   deletedByAdminId Int?      @map("deleted_by_admin_id")
@@ -70,10 +71,13 @@ model Flight {
 }
 
 model Destination {
-  id        Int        @id @default(autoincrement()) @map("dest_id")
-  name      String
-  country   String
-  imageUrl  String?    @map("image_url")
+  id          Int        @id @default(autoincrement()) @map("dest_id")
+  name        String
+  country     String
+  imageUrl    String?    @map("image_url")
+  description String?
+  cost        Float?
+  rating      Float?
 
   flights   Flight[]
   topPlaces TopPlace[]

@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const destCardHTML = dest => `
     <div class="dest-card" style="flex:0 0 calc((100% - 48px)/3); min-width:calc((100% - 48px)/3);">
       <div class="dest-card-img-wrapper">
-        <img src="${dest.images}" alt="${dest.name}" class="dest-card-img" loading="lazy" />
+        <img src="${dest.imageUrl || ''}" alt="${dest.name}" class="dest-card-img" loading="lazy" />
       </div>
       <div class="dest-card-content">
         <div class="dest-card-header">
@@ -44,10 +44,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             <h3 class="dest-card-title">${dest.name}</h3>
             <div class="dest-card-rating">
               <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <span>${dest.rating}</span>
+              <span>${dest.rating || ''}</span>
             </div>
           </div>
-          <p class="dest-card-price">€${dest.cost}</p>
+          <p class="dest-card-price">${dest.cost ? '€' + dest.cost : ''}</p>
         </div>
         <a href="destination.html?id=${dest.id}" class="btn-card-action">View Tour</a>
       </div>

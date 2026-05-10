@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ── Populate hero ────────────────────────────────────────
     document.title = `Horizon – ${dest.name}`;
-    document.getElementById('dest-bg').src       = dest.images || '';
+    document.getElementById('dest-bg').src       = dest.imageUrl || '';
     document.getElementById('dest-bg').alt       = dest.name;
     document.getElementById('dest-country').innerText = dest.country.toUpperCase();
     document.getElementById('dest-title').innerText   = dest.name;
@@ -76,9 +76,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (dest.flights && dest.flights.length > 0) {
       flightsList.innerHTML = dest.flights.map(f => `
         <div style="padding:12px 16px;border:1px solid rgba(255,255,255,0.15);border-radius:12px;margin-bottom:10px;background:rgba(255,255,255,0.05);">
-          <div style="font-weight:700;font-size:0.9rem;color:white;">${f.airlineName}</div>
+          <div style="font-weight:700;font-size:0.9rem;color:white;">${f.flightNumber}</div>
           <div style="font-size:0.8rem;color:rgba(255,255,255,0.65);margin-top:4px;">
-            Departs: ${new Date(f.departureTime).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
+            Departs: ${new Date(f.departure).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
           </div>
           <div style="font-size:1rem;font-weight:700;color:#93c5fd;margin-top:6px;">€${f.price}</div>
         </div>

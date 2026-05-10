@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const destinations = await prisma.destination.findMany();
+        const destinations = await prisma.destination.findMany({
+            orderBy: { country: 'asc' }
+        });
         res.json(destinations);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -16,7 +18,7 @@ router.get('/:id', async (req, res) => {
     try {
         const destination = await prisma.destination.findUnique({
             where: { id: parseInt(req.params.id) },
-            include: { flights: true, reviews: true }
+            include: { flights: true, topPlaces: true }
         });
         if (!destination) return res.status(404).json({ message: "Destination not found" });
         res.json(destination);
