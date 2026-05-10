@@ -6,103 +6,85 @@ datasource db {
   provider = "postgresql"
 }
 
+model Admin {
+  id                Int       @id @default(autoincrement()) @map("admin_id")
+  email             String    @unique
+  password          String
+  deletedUsers      User[]    @relation("DeletedUser") // Pluralized
+  cancelledBookings Booking[] @relation("CancelledBookings")
+}
+
 model User {
-  id        Int       @id @default(autoincrement())
-  firstName String?
-  lastName  String?
-  email     String    @unique
-  password  String
-  role      String    @default("user")
-  bookings  Booking[] 
-  reviews   Review[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
-
-model Destination {
-  id          Int       @id @default(autoincrement())
-  name        String
-  country     String
-  description String?
-  cost        Float?
-  images      String?
-  rating      Float?
-  
-  flights     Flight[]
-  reviews     Review[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-}
-
-model Flight {
-  id              Int         @id @default(autoincrement())
-  airlineName     String
-  departureCity   String
-  arrivalCity     String
-  departureTime   DateTime
-  arrivalTime     DateTime
-  price           Float
-  durationMinutes Int?
-  
-  destinationId   Int
-  destination     Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
-  
-  bookings        Booking[]
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  id               Int       @id @default(autoincrement()) @map("user_id")
+  email            String    @unique
+  password         String
+  fullName         String    @map("full_name")
+  bookings         Booking[]
+  reviews          Review[]
+  deletedByAdminId Int?      @map("deleted_by_admin_id")
+  deletedByAdmin   Admin?    @relation("DeletedUser", fields: [deletedByAdminId], references: [id])
 }
 
 model Booking {
-  id          Int      @id @default(autoincrement())
-  bookingDate DateTime @default(now())
-  status      String   @default("pending")
+  id                 Int       @id @default(autoincrement()) @map("booking_id")
+  date               DateTime?
+  totalPrice         Float?    @map("total_price")
   
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  flightId    Int
-  flight      Flight   @relation(fields: [flightId], references: [id], onDelete: Cascade)
-  
-  passengers  Passenger[]
-  payment     Payment?
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
+  // Removed redundant destination and flightNumber fields
 
-model Passenger {
-  id             Int      @id @default(autoincrement())
-  fullName       String
-  passportNumber String
-  dateOfBirth    String
-  
-  bookingId      Int
-  booking        Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-}
+  userId             Int       @map("user_id") // Added map for consistency
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-model Payment {
-  id             Int      @id @default(autoincrement())
-  cardNumber     String
-  cardholderName String
-  expiryDate     String
-  cvv            String
-  status         String   @default("completed")
-  
-  bookingId      Int      @unique
-  booking        Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  flightId           Int       @map("flight_id") // Added map for consistency
+  flight             Flight    @relation(fields: [flightId], references: [id])
+
+  cancelledByAdminId Int?      @map("cancelled_by_admin_id")
+  cancelledByAdmin   Admin?    @relation("CancelledBookings", fields: [cancelledByAdminId], references: [id])
+
+  review             Review?
 }
 
 model Review {
+  id        Int      @id @default(autoincrement()) @map("review_id")
+  score     Float
+  comment   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bookingId Int      @unique @map("booking_id")
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+}
+
+model Flight {
+  id            Int         @id @default(autoincrement()) @map("flight_id")
+  flightNumber  String      @map("flight_no")
+  price         Float
+  departure     String
+
+  destinationId Int         @map("destination_id")
+  destination   Destination @relation(fields: [destinationId], references: [id])
+
+  bookings      Booking[]
+}
+
+model Destination {
+  id        Int        @id @default(autoincrement()) @map("dest_id")
+  name      String
+  country   String
+  imageUrl  String?    @map("image_url")
+
+  flights   Flight[]
+  topPlaces TopPlace[]
+}
+
+model TopPlace {
   id            Int         @id @default(autoincrement())
-  comment       String
-  rating        Float
-  
-  userId        Int
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  destinationId Int
+  photoNumber   Int         @map("photo_number")
+  imageUrl      String      @map("image_url")
+  caption       String
+
+  destinationId Int         @map("destination_id") // Added map for consistency
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
-  
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
 }
