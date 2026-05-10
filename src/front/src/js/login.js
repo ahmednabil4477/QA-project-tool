@@ -47,7 +47,7 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
       if (data.user.role === 'admin') {
         window.location.href = 'admin-users.html';
       } else {
-        window.location.href = 'index.html';
+        window.location.href = 'gallery.html';
       }
     } else {
       showError('generalError', 'invalid email or password');

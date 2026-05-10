@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const data = await res.json();
       if (res.ok) {
         alert("Booking completed successfully!");
-        window.location.href = 'bookings.html';
+        window.location.href = 'my-bookings.html';
       } else {
         showError('generalError', data.message || 'Booking failed');
       }

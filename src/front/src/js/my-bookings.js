@@ -82,7 +82,7 @@ window.renderBookings = () => {
     container.innerHTML = `
       <div style="text-align: center; padding: 48px; background: white; border-radius: 24px; border: 1px solid var(--border-color);">
         <p style="color: var(--text-muted); font-weight: 500;">You haven't curated any journeys yet.</p>
-        <a href="index.html" class="btn-primary" style="display: inline-flex; width: auto; margin-top: 24px; padding: 12px 32px;">View Gallery</a>
+        <a href="gallery.html" class="btn-primary" style="display: inline-flex; width: auto; margin-top: 24px; padding: 12px 32px;">View Gallery</a>
       </div>
     `;
     return;
@@ -103,7 +103,7 @@ window.renderBookings = () => {
           Departure: ${new Date(b.departureTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </div>
         <div class="booking-tags">
-          <span class="booking-tag" style="background: ${b.status === 'confirmed' ? '#dcfce7' : '#fee2e2'}; color: ${b.status === 'confirmed' ? '#166534' : '#991b1b'}; text-transform: uppercase;">${b.status}</span>
+          <span class="booking-tag" style="background: ${(b.status || 'confirmed').toLowerCase() === 'confirmed' ? '#dcfce7' : '#fee2e2'}; color: ${(b.status || 'confirmed').toLowerCase() === 'confirmed' ? '#166534' : '#991b1b'}; text-transform: uppercase;">${(b.status || 'Confirmed').toUpperCase()}</span>
           <span class="booking-tag">€${b.totalPrice}</span>
           <span class="booking-tag">${b.airlineName}</span>
         </div>

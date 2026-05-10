@@ -9,12 +9,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        main: resolve(__dirname, 'gallery.html'),
         login: resolve(__dirname, 'login.html'),
-        signup: resolve(__dirname, 'signup.html'),
+        signup: resolve(__dirname, 'create-account.html'),
         flights: resolve(__dirname, 'flights.html'),
         checkout: resolve(__dirname, 'checkout.html'),
-        bookings: resolve(__dirname, 'bookings.html'),
+        bookings: resolve(__dirname, 'my-bookings.html'),
         destination: resolve(__dirname, 'destination.html'),
         adminUsers: resolve(__dirname, 'admin-users.html'),
         adminBookings: resolve(__dirname, 'admin-bookings.html')
