@@ -41,21 +41,19 @@ model Booking {
 
   cancelledByAdminId Int?      @map("cancelled_by_admin_id")
   cancelledByAdmin   Admin?    @relation("CancelledBookings", fields: [cancelledByAdminId], references: [id])
-
-  review             Review?
 }
 
 model Review {
-  id        Int      @id @default(autoincrement()) @map("review_id")
-  score     Float
-  comment   String
-  createdAt DateTime @default(now()) @map("created_at")
+  id            Int         @id @default(autoincrement()) @map("review_id")
+  rating        Float
+  comment       String
+  createdAt     DateTime    @default(now()) @map("created_at")
 
-  userId    Int      @map("user_id")
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int         @map("user_id")
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  bookingId Int      @unique @map("booking_id")
-  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  destinationId Int         @map("destination_id")
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
 }
 
 model Flight {
@@ -89,6 +87,7 @@ model Destination {
 
   flights   Flight[]
   topPlaces TopPlace[]
+  reviews   Review[]
 }
 
 model TopPlace {
