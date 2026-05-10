@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </td>
         <td>
           <span class="t-date" style="color: #0f172a; font-weight: 600;">€${b.totalPrice}</span>
-          <div style="font-size: 0.75rem; color: ${b.status === 'confirmed' ? '#10b981' : '#f59e0b'}; margin-top: 2px;">${b.status}</div>
+          <div style="font-size: 0.75rem; color: ${(b.status || 'Confirmed').toLowerCase() === 'confirmed' ? '#10b981' : '#f59e0b'}; margin-top: 2px;">${(b.status || 'Confirmed').toUpperCase()}</div>
         </td>
         <td style="text-align: right;">
           <button class="t-action-btn" onclick="openAdminModal('delete-booking-modal', ${b.id})" style="display:inline-flex;">
