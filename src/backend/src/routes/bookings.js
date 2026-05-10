@@ -4,37 +4,29 @@ const { verifyToken, verifyAdmin } = require('../middleware/auth');
 const router = express.Router();
 
 router.post('/', verifyToken, async (req, res) => {
-    const { flight_id, passengers, payment } = req.body;
+    const { flight_id } = req.body;
     const user_id = req.user.id;
 
     try {
-        const result = await prisma.$transaction(async (tx) => {
-            const booking = await tx.booking.create({
-                data: {
-                    userId: user_id,
-                    flightId: parseInt(flight_id),
-                    status: 'confirmed',
-                    passengers: {
-                        create: passengers.map(p => ({
-                            fullName: p.fullName,
-                            passportNumber: p.passportNumber,
-                            dateOfBirth: p.dateOfBirth
-                        }))
-                    },
-                    payment: {
-                        create: {
-                            cardNumber: payment.cardNumber,
-                            cardholderName: payment.cardholderName,
-                            expiryDate: payment.expiryDate,
-                            cvv: payment.cvv,
-                            status: 'completed'
-                        }
-                    }
-                }
-            });
-            return booking;
+        // Fetch flight price to save as totalPrice
+        const flight = await prisma.flight.findUnique({
+            where: { id: parseInt(flight_id) }
         });
-        res.status(201).json({ message: "Booking created successfully", booking_id: result.id });
+
+        if (!flight) {
+            return res.status(404).json({ message: "Flight not found" });
+        }
+
+        const booking = await prisma.booking.create({
+            data: {
+                userId: user_id,
+                flightId: parseInt(flight_id),
+                date: new Date(),
+                totalPrice: flight.price
+            }
+        });
+        
+        res.status(201).json({ message: "Booking created successfully", booking_id: booking.id });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -61,7 +53,7 @@ router.get('/my-bookings', verifyToken, async (req, res) => {
             departureTime: b.flight.departureTime,
             totalPrice: b.flight.price,
             destinationName: b.flight.destination.name,
-            destinationImage: b.flight.destination.images
+            destinationImage: b.flight.destination.imageUrl
         }));
         
         res.json(formatted);
@@ -73,8 +65,7 @@ router.get('/my-bookings', verifyToken, async (req, res) => {
 router.get('/:id', verifyToken, async (req, res) => {
     try {
         const booking = await prisma.booking.findUnique({
-            where: { id: parseInt(req.params.id) },
-            include: { passengers: true, payment: true }
+            where: { id: parseInt(req.params.id) }
         });
         
         if (!booking) return res.status(404).json({ message: "Booking not found" });
