@@ -85,7 +85,7 @@ document.getElementById('registerBtn').addEventListener('click', async () => {
     const data = await res.json();
     
     if (res.ok) {
-      window.location.href = 'index.html';
+      window.location.href = 'login.html';
     } else {
       if (data.message === 'Email already exists.') {
         showError('generalError', 'Email already has an account');
