@@ -82,7 +82,7 @@ window.renderBookings = () => {
     container.innerHTML = `
       <div style="text-align: center; padding: 48px; background: white; border-radius: 24px; border: 1px solid var(--border-color);">
         <p style="color: var(--text-muted); font-weight: 500;">You haven't curated any journeys yet.</p>
-        <a href="gallery.html" class="btn-primary" style="display: inline-flex; width: auto; margin-top: 24px; padding: 12px 32px;">View Gallery</a>
+        <a href="index.html" class="btn-primary" style="display: inline-flex; width: auto; margin-top: 24px; padding: 12px 32px;">View Gallery</a>
       </div>
     `;
     return;
