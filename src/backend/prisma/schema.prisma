@@ -59,15 +59,23 @@ model Review {
 }
 
 model Flight {
-  id            Int         @id @default(autoincrement()) @map("flight_id")
-  flightNumber  String      @map("flight_no")
-  price         Float
-  departure     String
+  id              Int         @id @default(autoincrement()) @map("flight_id")
+  flightNumber    String      @map("flight_no")
+  price           Float
+  departure       String
 
-  destinationId Int         @map("destination_id")
-  destination   Destination @relation(fields: [destinationId], references: [id])
+  // Added fields for flight search functionality
+  airlineName     String?     @map("airline_name")
+  departureCity   String?     @map("departure_city")
+  arrivalCity     String?     @map("arrival_city")
+  departureTime   DateTime?   @map("departure_time")
+  arrivalTime     DateTime?   @map("arrival_time")
+  durationMinutes Int?        @map("duration_minutes")
 
-  bookings      Booking[]
+  destinationId   Int         @map("destination_id")
+  destination     Destination @relation(fields: [destinationId], references: [id])
+
+  bookings        Booking[]
 }
 
 model Destination {
