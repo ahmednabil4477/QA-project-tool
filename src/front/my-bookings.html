@@ -41,7 +41,7 @@
   <!-- Share Experience Modal -->
   <div class="modal-overlay" id="review-modal">
     <div class="modal-content">
-      <button class="modal-close" onclick="closeModal()">
+      <button class="modal-close" id="close-review-modal">
         <svg style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
       <h3 class="modal-title">Share Your Experience</h3>
@@ -56,8 +56,8 @@
       <textarea class="modal-textarea" id="review-comment" placeholder="Describe what you liked the most about the website......."></textarea>
       
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-        <button class="btn-submit" onclick="submitReview()">Submit Review</button>
+        <button class="btn-cancel" id="close-review-modal-cancel">Cancel</button>
+        <button class="btn-submit" id="submit-review-btn">Submit Review</button>
       </div>
     </div>
   </div>

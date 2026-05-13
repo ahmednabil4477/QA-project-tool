@@ -1,30 +1,25 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = 'horizon_secret_key_change_in_production';
+const SECRET_KEY = process.env.JWT_SECRET || 'horizon_secret_key_change_in_production';
 
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-        jwt.verify(token, SECRET_KEY, (err, user) => {
-            if (err) {
-                return res.status(403).json({ message: "Invalid or expired token" });
-            }
-            req.user = user;
-            next();
-        });
-    } else {
-        res.status(401).json({ message: "Authorization header missing" });
+    if (!authHeader) {
+        return res.status(401).json({ message: 'Authorization header missing' });
     }
+
+    const token = authHeader.split(' ')[1];
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+        if (err) return res.status(403).json({ message: 'Invalid or expired token' });
+        req.user = user;
+        next();
+    });
 };
 
 const verifyAdmin = (req, res, next) => {
     verifyToken(req, res, () => {
-        if (req.user && req.user.role === 'admin') {
-            next();
-        } else {
-            res.status(403).json({ message: "Admin privileges required" });
-        }
+        if (req.user?.role === 'admin') return next();
+        res.status(403).json({ message: 'Admin privileges required' });
     });
 };
 

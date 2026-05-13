@@ -1,8 +1,10 @@
 const express = require('express');
-const prisma = require('../prismaClient');
+const prisma   = require('../prismaClient');
 const { verifyToken, verifyAdmin } = require('../middleware/auth');
-const router = express.Router();
+const { parseId, handleError, requireRecord } = require('../utils/helpers');
+const router   = express.Router();
 
+// GET /users — admin: list all users (safe fields only)
 router.get('/', verifyAdmin, async (req, res) => {
     try {
         const users = await prisma.user.findMany({
@@ -10,57 +12,60 @@ router.get('/', verifyAdmin, async (req, res) => {
         });
         res.json(users);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        handleError(res, err);
     }
 });
 
+// GET /users/:id — owner or admin
 router.get('/:id', verifyToken, async (req, res) => {
-    if (req.user.id !== parseInt(req.params.id) && req.user.role !== 'admin') {
-        return res.status(403).json({ message: "Access denied" });
+    const id = parseId(req.params.id);
+    if (req.user.id !== id && req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'Access denied' });
     }
     try {
         const user = await prisma.user.findUnique({
-            where: { id: parseInt(req.params.id) },
+            where:  { id },
             select: { id: true, firstName: true, lastName: true, email: true }
         });
-        if (!user) return res.status(404).json({ message: "User not found" });
+        if (!requireRecord(res, user, 'User')) return;
         res.json(user);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        handleError(res, err);
     }
 });
 
+// DELETE /users/:id — admin only
 router.delete('/:id', verifyAdmin, async (req, res) => {
     try {
-        await prisma.user.delete({
-            where: { id: parseInt(req.params.id) }
-        });
-        res.json({ message: "User deleted successfully" });
+        await prisma.user.delete({ where: { id: parseId(req.params.id) } });
+        res.json({ message: 'User deleted successfully' });
     } catch (err) {
-        if (err.code === 'P2025') return res.status(404).json({ message: "User not found" });
-        res.status(500).json({ error: err.message });
+        if (err.code === 'P2025') return res.status(404).json({ message: 'User not found' });
+        handleError(res, err);
     }
 });
 
+// PUT /users/:id — owner or admin: update profile
 router.put('/:id', verifyToken, async (req, res) => {
-    if (req.user.id !== parseInt(req.params.id) && req.user.role !== 'admin') {
-        return res.status(403).json({ message: "Access denied" });
+    const id = parseId(req.params.id);
+    if (req.user.id !== id && req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'Access denied' });
     }
     const { firstName, lastName, email } = req.body;
     try {
-        const updatedUser = await prisma.user.update({
-            where: { id: parseInt(req.params.id) },
-            data: {
+        const updated = await prisma.user.update({
+            where:  { id },
+            data:   {
                 ...(firstName && { firstName }),
-                ...(lastName && { lastName }),
-                ...(email && { email })
+                ...(lastName  && { lastName }),
+                ...(email     && { email }),
             },
             select: { id: true, firstName: true, lastName: true, email: true }
         });
-        res.json(updatedUser);
+        res.json(updated);
     } catch (err) {
-        if (err.code === 'P2025') return res.status(404).json({ message: "User not found" });
-        res.status(500).json({ error: err.message });
+        if (err.code === 'P2025') return res.status(404).json({ message: 'User not found' });
+        handleError(res, err);
     }
 });
 
