@@ -18,6 +18,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
+  const dobInput = document.getElementById('dob');
+  if (dobInput) {
+    const today = new Date();
+    const maxYear = today.getFullYear() - 18;
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    dobInput.setAttribute('max', `${maxYear}-${month}-${day}`);
+  }
+
   let flightPrice = 0;
 
   // Fetch flight details
@@ -69,21 +78,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     if (!dob) {
       showError('dobError', 'This field is required');
-    } else {
-      const dobDate = new Date(dob);
-      const today = new Date();
-      if (dobDate > today) {
-        showError('dobError', 'Future dates are not allowed');
-      } else {
-        let age = today.getFullYear() - dobDate.getFullYear();
-        const m = today.getMonth() - dobDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
-          age--;
-        }
-        if (age <= 18) {
-          showError('dobError', 'Age must be higher than 18 years');
-        }
-      }
     }
 
     // Payment Details
