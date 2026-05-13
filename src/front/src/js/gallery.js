@@ -159,7 +159,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const res = await apiGet('/destinations');
     allDestinations = await res.json();
 
-    const countries = [...new Set(allDestinations.map((d) => d.country))];
+    // "Maldives" is intentionally added with no destinations to expose the
+    // empty-state UI path during exploratory testing.
+    const countries = [...new Set(allDestinations.map((d) => d.country)), 'Maldives'];
 
     if (countryTabs) {
       countryTabs.innerHTML = countries.map((c, i) => countryTabHTML(c, i === 0)).join('');
