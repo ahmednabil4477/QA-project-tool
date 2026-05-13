@@ -33,19 +33,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   const searchBtn = document.getElementById('flightSearchBtn');
   if (searchBtn) {
     searchBtn.addEventListener('click', async () => {
-      document.querySelectorAll('.f-error').forEach(el => { el.innerText = ''; el.style.display = 'none'; });
+      document.querySelectorAll('.f-error').forEach(el => { el.innerText = ''; el.style.visibility = 'hidden'; });
       
       const from = document.getElementById('flightFrom').value.trim();
       const to = document.getElementById('flightTo').value.trim();
       const date = document.getElementById('flightDate').value;
       let isValid = true;
       
-      if (!from) { document.getElementById('flightFromError').innerText = 'This field is required'; document.getElementById('flightFromError').style.display = 'block'; isValid = false; }
-      if (!to) { document.getElementById('flightToError').innerText = 'This field is required'; document.getElementById('flightToError').style.display = 'block'; isValid = false; }
-      if (!date) { document.getElementById('flightDateError').innerText = 'This field is required'; document.getElementById('flightDateError').style.display = 'block'; isValid = false; }
+      if (!from) { document.getElementById('flightFromError').innerText = 'This field is required'; document.getElementById('flightFromError').style.visibility = 'visible'; isValid = false; }
+      if (!to) { document.getElementById('flightToError').innerText = 'This field is required'; document.getElementById('flightToError').style.visibility = 'visible'; isValid = false; }
+      if (!date) { document.getElementById('flightDateError').innerText = 'This field is required'; document.getElementById('flightDateError').style.visibility = 'visible'; isValid = false; }
       
       if (from && to && from.toLowerCase() === to.toLowerCase()) {
-        document.getElementById('flightToError').innerText = 'Destination cannot be the same as Departure'; document.getElementById('flightToError').style.display = 'block'; isValid = false;
+        document.getElementById('flightToError').innerText = 'Destination cannot be the same as Departure'; document.getElementById('flightToError').style.visibility = 'visible'; isValid = false;
       }
       
       if (!isValid) return;
