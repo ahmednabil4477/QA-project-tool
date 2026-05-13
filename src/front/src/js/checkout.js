@@ -33,6 +33,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error(err);
   }
 
+  const expiryDateInput = document.getElementById('expiryDate');
+  expiryDateInput.addEventListener('input', (e) => {
+    let val = e.target.value.replace(/\D/g, ''); // remove all non-digits
+    if (val.length > 2) {
+      val = val.substring(0, 2) + '/' + val.substring(2, 4);
+    }
+    e.target.value = val;
+  });
+
   const payBtn = document.getElementById('payBtn');
   payBtn.addEventListener('click', async () => {
     // Clear errors
@@ -53,16 +62,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     if (!fullName) showError('fullNameError', 'This field is required');
     else if (!/^[a-zA-Z\s]+$/.test(fullName)) showError('fullNameError', 'Only alphabetic characters are allowed');
+    else if (fullName.length < 3 || fullName.length > 30) showError('fullNameError', 'Name must be between 3 and 30 characters');
     
     if (!passportNumber) showError('passportNumberError', 'This field is required');
     else if (!/^[A-Za-z0-9]+$/.test(passportNumber)) showError('passportNumberError', 'Invalid passport format');
     
-    if (!dob) showError('dobError', 'This field is required');
+    if (!dob) {
+      showError('dobError', 'This field is required');
+    } else {
+      const dobDate = new Date(dob);
+      const today = new Date();
+      if (dobDate > today) {
+        showError('dobError', 'Future dates are not allowed');
+      } else {
+        let age = today.getFullYear() - dobDate.getFullYear();
+        const m = today.getMonth() - dobDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+          age--;
+        }
+        if (age <= 18) {
+          showError('dobError', 'Age must be higher than 18 years');
+        }
+      }
+    }
 
     // Payment Details
+    const cardHolderName = document.getElementById('cardHolderName').value.trim();
     const cardNumber = document.getElementById('cardNumber').value.replace(/\s+/g, '');
     const expiryDate = document.getElementById('expiryDate').value.trim();
     const cvc = document.getElementById('cvc').value.trim();
+
+    if (!cardHolderName) showError('cardHolderNameError', 'This field is required');
 
     if (!cardNumber) showError('cardNumberError', 'This field is required');
     else if (!/^\d{16}$/.test(cardNumber)) showError('cardNumberError', 'Invalid card number format');
@@ -92,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           }],
           payment: {
             cardNumber,
-            cardholderName: fullName, // using full name from passenger
+            cardholderName: cardHolderName,
             expiryDate,
             cvv: cvc
           }
