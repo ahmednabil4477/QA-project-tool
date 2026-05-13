@@ -273,7 +273,7 @@ button {
 .flight-widget-title { font-size: 1.875rem; font-weight: 700; margin-bottom: 32px; }
 .flight-inputs { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: flex-end; }
 @media(min-width: 768px) { .flight-inputs { grid-template-columns: repeat(4, 1fr); } }
-.f-input-group { display: flex; flex-direction: column; gap: 8px; position: relative; }
+.f-input-group { display: flex; flex-direction: column; gap: 8px; position: relative; min-width: 0; }
 .f-label { font-size: 0.75rem; font-weight: 700; color: #cbd5e1; letter-spacing: 0.05em; }
 .f-field { background-color: #1e293b; border-radius: 12px; padding: 16px; display: flex; align-items: center; }
 .f-field svg { width: 20px; height: 20px; color: #94a3b8; margin-right: 12px; }
@@ -532,6 +532,9 @@ button {
   font-size: 0.875rem;
   user-select: none;
   width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .custom-dropdown-menu {
   position: absolute;
