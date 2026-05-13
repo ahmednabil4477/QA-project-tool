@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     tbody.innerHTML = paginatedBookings.map(b => `
       <tr>
         <td>
-          <span class="t-badge-dark">#USR-${b.userId}</span>
+          <span class="t-badge-dark">#BKG-${b.id}</span>
         </td>
         <td>
           <div style="font-size: 0.875rem; color: #0f172a; font-weight: 600;">${b.userName || 'Guest'}</div>

@@ -192,6 +192,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       setupDropdown('dropdownFrom', 'flightFromTrigger', 'flightFrom', 'flightFromMenu');
       setupDropdown('dropdownTo', 'flightToTrigger', 'flightTo', 'flightToMenu');
 
+      const urlParams = new URLSearchParams(window.location.search);
+      const destParam = urlParams.get('destination');
+      if (destParam) {
+        const flightToInput = document.getElementById('flightTo');
+        const flightToTrigger = document.getElementById('flightToTrigger');
+        if (flightToInput && flightToTrigger) {
+          flightToInput.value = destParam;
+          flightToTrigger.innerText = destParam;
+        }
+      }
+
       document.addEventListener('click', () => {
         document.querySelectorAll('.custom-dropdown').forEach(d => d.classList.remove('open'));
       });

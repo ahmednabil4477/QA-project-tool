@@ -71,21 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       </div>
     `).join('');
 
-    // ── Flights sidebar ──────────────────────────────────────
-    const flightsList = document.getElementById('flights-list');
-    if (dest.flights && dest.flights.length > 0) {
-      flightsList.innerHTML = dest.flights.map(f => `
-        <div style="padding:12px 16px;border:1px solid rgba(255,255,255,0.15);border-radius:12px;margin-bottom:10px;background:rgba(255,255,255,0.05);">
-          <div style="font-weight:700;font-size:0.9rem;color:white;">${f.flightNumber}</div>
-          <div style="font-size:0.8rem;color:rgba(255,255,255,0.65);margin-top:4px;">
-            Departs: ${new Date(f.departure).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
-          </div>
-          <div style="font-size:1rem;font-weight:700;color:#93c5fd;margin-top:6px;">€${f.price}</div>
-        </div>
-      `).join('');
-    } else {
-      flightsList.innerHTML = '<p style="font-size:0.875rem;color:rgba(255,255,255,0.5);">No upcoming flights found.</p>';
-    }
+
 
     document.getElementById('book-flight-btn').addEventListener('click', () => {
       window.location.href = `flights.html?destination=${encodeURIComponent(dest.name)}`;
