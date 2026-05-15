@@ -5,9 +5,9 @@ import { apiGet } from './utils/api.js';
 
 const VISUAL_IMAGES = [
   { tag: 'ARCHITECTURAL HERITAGE', img: 'https://images.unsplash.com/photo-1549646849-fb93be1d4a04?q=80&w=800&auto=format&fit=crop' },
-  { tag: 'LOCAL CUISINE',          img: 'https://images.unsplash.com/photo-1515859005217-8a1f08870f59?q=80&w=800&auto=format&fit=crop' },
-  { tag: 'NATURAL WONDERS',        img: 'https://images.unsplash.com/photo-1433477155337-9aea4e790195?q=80&w=800&auto=format&fit=crop' },
-  { tag: 'CULTURAL EXPERIENCES',   img: 'https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?q=80&w=800&auto=format&fit=crop' },
+  { tag: 'LOCAL CUISINE', img: 'https://images.unsplash.com/photo-1515859005217-8a1f08870f59?q=80&w=800&auto=format&fit=crop' },
+  { tag: 'NATURAL WONDERS', img: 'https://images.unsplash.com/photo-1433477155337-9aea4e790195?q=80&w=800&auto=format&fit=crop' },
+  { tag: 'CULTURAL EXPERIENCES', img: 'https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?q=80&w=800&auto=format&fit=crop' },
 ];
 
 // ── Templates ─────────────────────────────────────────────────────────────────
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    const res  = await apiGet(`/destinations/${id}`);
+    const res = await apiGet(`/destinations/${id}`);
     const dest = await res.json();
     if (!res.ok) throw new Error('Destination not found');
 
@@ -67,8 +67,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const setText = (elId, text) => { const el = document.getElementById(elId); if (el) el.textContent = text; };
     setText('dest-country', dest.country.toUpperCase());
-    setText('dest-title',   dest.name);
-    setText('dest-desc',    dest.description || '');
+    setText('dest-title', dest.name);
+    setText('dest-desc', dest.description || '');
 
     // Body paragraphs
     const [p1, p2] = splitParagraphs(dest.description);
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Book flight button
     document.getElementById('book-flight-btn')
-      ?.addEventListener('click', () => {
+      ?.addEventListener('click', function handle_book_flight_click() {
         window.location.href = `flights.html?destination=${encodeURIComponent(dest.name)}`;
       });
 
