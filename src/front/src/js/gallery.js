@@ -8,7 +8,13 @@ const STAR_PATH = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25
 const destCardHTML = (dest) => `
   <div class="dest-card" style="flex:0 0 calc((100% - 48px)/3);min-width:calc((100% - 48px)/3);">
     <div class="dest-card-img-wrapper">
-      <img src="${dest.imageUrl || ''}" alt="${dest.name}" class="dest-card-img" loading="lazy" />
+      <img
+        src="${dest.imageUrl || ''}"
+        alt="${dest.name}"
+        class="dest-card-img"
+        loading="lazy"
+        onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800&auto=format&fit=crop'"
+      />
     </div>
     <div class="dest-card-content">
       <div class="dest-card-header">
@@ -39,6 +45,7 @@ const reviewCardHTML = (t) => `
         src="https://ui-avatars.com/api/?name=${encodeURIComponent(t.firstName + ' ' + t.lastName)}&background=random"
         class="testi-avatar"
         alt="${t.firstName} ${t.lastName}"
+        onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=User&background=random'"
       />
       <div>
         <h4 class="testi-name">${t.firstName} ${t.lastName}</h4>
@@ -159,9 +166,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const res = await apiGet('/destinations');
     allDestinations = await res.json();
 
-    // "Maldives" is intentionally added with no destinations to expose the
-    // empty-state UI path during exploratory testing.
-    const countries = [...new Set(allDestinations.map((d) => d.country)), 'Maldives'];
+    // Derive unique countries from fetched destinations only (no placeholder countries).
+    const countries = [...new Set(allDestinations.map((d) => d.country))];
 
     if (countryTabs) {
       countryTabs.innerHTML = countries.map((c, i) => countryTabHTML(c, i === 0)).join('');

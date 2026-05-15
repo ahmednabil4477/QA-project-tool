@@ -14,7 +14,12 @@ const VISUAL_IMAGES = [
 
 const visualCardHTML = (dest, pick) => `
   <div class="v-card">
-    <img src="${pick.img}" class="v-card-img" alt="${pick.tag}" />
+    <img
+      src="${pick.img}"
+      class="v-card-img"
+      alt="${pick.tag}"
+      onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800&auto=format&fit=crop'"
+    />
     <div class="v-card-content">
       <span class="v-card-tag">${pick.tag}</span>
       <h3 class="v-card-title">
