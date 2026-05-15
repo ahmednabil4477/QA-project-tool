@@ -63,16 +63,16 @@ const reviewCardHTML = (t) => `
 
 const slideTrack = (track, idx, animate = true) => {
   track.style.transition = animate ? 'transform 0.5s cubic-bezier(0.4,0,0.2,1)' : 'none';
-  track.style.transform  = `translateX(-${idx * (100 / 3)}%)`;
+  track.style.transform = `translateX(-${idx * (100 / 3)}%)`;
 };
 
 // ── Destination carousel ──────────────────────────────────────────────────────
 
 let allDestinations = [];
-let filteredDests   = [];
-let destIndex       = 0;
+let filteredDests = [];
+let destIndex = 0;
 
-const destTrack   = document.getElementById('destinations-track');
+const destTrack = document.getElementById('destinations-track');
 const destPrevBtn = document.getElementById('dest-prev');
 const destNextBtn = document.getElementById('dest-next');
 const countryTabs = document.getElementById('country-tabs');
@@ -90,10 +90,10 @@ const renderDestinations = (country) => {
   const cloned = [...filteredDests, ...filteredDests.slice(0, 3)];
   destTrack.innerHTML = cloned.map(destCardHTML).join('');
   destTrack.style.transition = 'none';
-  destTrack.style.transform  = 'translateX(0)';
+  destTrack.style.transform = 'translateX(0)';
 };
 
-destNextBtn?.addEventListener('click', () => {
+destNextBtn?.addEventListener('click', function dest_next_handler() {
   destIndex++;
   slideTrack(destTrack, destIndex);
   if (destIndex >= filteredDests.length) {
@@ -101,7 +101,7 @@ destNextBtn?.addEventListener('click', () => {
   }
 });
 
-destPrevBtn?.addEventListener('click', () => {
+destPrevBtn?.addEventListener('click', function dest_prev_handler() {
   if (destIndex <= 0) {
     destIndex = filteredDests.length;
     slideTrack(destTrack, destIndex, false);
@@ -114,7 +114,7 @@ destPrevBtn?.addEventListener('click', () => {
 
 // ── Review carousel ───────────────────────────────────────────────────────────
 
-let allReviews       = [];
+let allReviews = [];
 let currentReviewIdx = 0;
 
 const reviewTrack = document.getElementById('testimonials-container');
@@ -130,7 +130,7 @@ const renderReviews = () => {
   slideTrack(reviewTrack, currentReviewIdx);
 };
 
-document.getElementById('review-next')?.addEventListener('click', () => {
+document.getElementById('review-next')?.addEventListener('click', function review_next_handler() {
   currentReviewIdx++;
   renderReviews();
   if (currentReviewIdx >= allReviews.length) {
@@ -142,7 +142,7 @@ document.getElementById('review-next')?.addEventListener('click', () => {
   }
 });
 
-document.getElementById('review-prev')?.addEventListener('click', () => {
+document.getElementById('review-prev')?.addEventListener('click', function review_prev_handler() {
   if (currentReviewIdx <= 0) {
     reviewTrack.style.transition = 'none';
     currentReviewIdx = allReviews.length;
@@ -158,7 +158,7 @@ document.getElementById('review-prev')?.addEventListener('click', () => {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async function init_page() {
   initPublicNav();
 
   // Destinations + country tabs

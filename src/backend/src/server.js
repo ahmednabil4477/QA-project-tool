@@ -9,7 +9,6 @@ const PORT = process.env.PORT || 5001;
 // Allow the Vercel frontend + localhost during development
 const allowedOrigins = [
   'http://localhost:3000',
-  'http://localhost:5173',
   process.env.FRONTEND_URL, // set this in Railway env vars
 ].filter(Boolean);
 

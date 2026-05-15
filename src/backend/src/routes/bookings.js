@@ -1,8 +1,8 @@
 const express = require('express');
-const prisma   = require('../prismaClient');
+const prisma = require('../prismaClient');
 const { verifyToken, verifyAdmin } = require('../middleware/auth');
 const { parseId, handleError, requireRecord } = require('../utils/helpers');
-const router   = express.Router();
+const router = express.Router();
 
 // POST /bookings — create a booking for the authenticated user
 router.post('/', verifyToken, async (req, res) => {
@@ -13,9 +13,9 @@ router.post('/', verifyToken, async (req, res) => {
 
         const booking = await prisma.booking.create({
             data: {
-                userId:     req.user.id,
-                flightId:   parseId(flight_id),
-                date:       new Date(),
+                userId: req.user.id,
+                flightId: parseId(flight_id),
+                date: new Date(),
                 totalPrice: flight.price,
             }
         });
@@ -29,18 +29,18 @@ router.post('/', verifyToken, async (req, res) => {
 router.get('/my-bookings', verifyToken, async (req, res) => {
     try {
         const bookings = await prisma.booking.findMany({
-            where:   { userId: req.user.id },
+            where: { userId: req.user.id },
             include: { flight: { include: { destination: true } } }
         });
 
         res.json(bookings.map((b) => ({
             ...b,
-            airlineName:      b.flight.airlineName,
-            departureCity:    b.flight.departureCity,
-            arrivalCity:      b.flight.arrivalCity,
-            departureTime:    b.flight.departureTime,
-            totalPrice:       b.flight.price,
-            destinationName:  b.flight.destination.name,
+            airlineName: b.flight.airlineName,
+            departureCity: b.flight.departureCity,
+            arrivalCity: b.flight.arrivalCity,
+            departureTime: b.flight.departureTime,
+            totalPrice: b.flight.price,
+            destinationName: b.flight.destination.name,
             destinationImage: b.flight.destination.imageUrl,
         })));
     } catch (err) {
@@ -72,12 +72,12 @@ router.get('/', verifyAdmin, async (req, res) => {
 
         res.json(bookings.map((b) => ({
             ...b,
-            userName:      `${b.user.firstName} ${b.user.lastName}`,
-            airlineName:   b.flight.airlineName,
+            userName: `${b.user.firstName} ${b.user.lastName}`,
+            airlineName: b.flight.airlineName,
             departureCity: b.flight.departureCity,
-            arrivalCity:   b.flight.arrivalCity,
+            arrivalCity: b.flight.arrivalCity,
             departureTime: b.flight.departureTime,
-            totalPrice:    b.flight.price,
+            totalPrice: b.flight.price,
         })));
     } catch (err) {
         handleError(res, err);
@@ -89,21 +89,6 @@ router.delete('/:id', verifyAdmin, async (req, res) => {
     try {
         await prisma.booking.delete({ where: { id: parseId(req.params.id) } });
         res.json({ message: 'Booking deleted successfully' });
-    } catch (err) {
-        if (err.code === 'P2025') return res.status(404).json({ message: 'Booking not found' });
-        handleError(res, err);
-    }
-});
-
-// PUT /bookings/:id — admin: update status
-router.put('/:id', verifyAdmin, async (req, res) => {
-    const { status } = req.body;
-    try {
-        const updated = await prisma.booking.update({
-            where: { id: parseId(req.params.id) },
-            data:  { ...(status && { status }) }
-        });
-        res.json(updated);
     } catch (err) {
         if (err.code === 'P2025') return res.status(404).json({ message: 'Booking not found' });
         handleError(res, err);
