@@ -94,11 +94,42 @@ const starHTML = (i, filled) => `
   </div>
 `;
 
+// ── Validation & SIQ mapped helpers ──────────────────────────────────────────
+
+const renderEmptyBookingsState = (containerElement) => {
+  containerElement.innerHTML = `
+    <div style="text-align:center;padding:48px;background:white;border-radius:24px;border:1px solid var(--border-color);">
+      <p style="color:var(--text-muted);font-weight:500;">You haven't curated any journeys yet.</p>
+      <a href="index.html" class="btn-primary" style="display:inline-flex;width:auto;margin-top:24px;padding:12px 32px;">View Gallery</a>
+    </div>
+  `;
+};
+
+const handleBookAgain = (destination) => {
+  window.location.href = `flights.html?destination=${destination}`;
+};
+
+const handleShareReviewClick = (destId) => {
+  openReviewModal(destId);
+};
+
+const getDefaultStarRating = () => {
+  return 4;
+};
+
+const isReviewFeedbackEmpty = (comment) => {
+  return !comment;
+};
+
+const submitReview = async (comment, rating, destId, token) => {
+  return await apiPost('/reviews', { comment, rating, destination_id: destId }, token);
+};
+
 // ── State ─────────────────────────────────────────────────────────────────────
 
 let allBookings  = [];
 let currentPage  = 1;
-let currentRating = 4;
+let currentRating = getDefaultStarRating();
 let currentDestId = null;
 const ITEMS_PER_PAGE = 3;
 
@@ -115,12 +146,7 @@ const renderBookings = () => {
   if (!container) return;
 
   if (allBookings.length === 0) {
-    container.innerHTML = `
-      <div style="text-align:center;padding:48px;background:white;border-radius:24px;border:1px solid var(--border-color);">
-        <p style="color:var(--text-muted);font-weight:500;">You haven't curated any journeys yet.</p>
-        <a href="index.html" class="btn-primary" style="display:inline-flex;width:auto;margin-top:24px;padding:12px 32px;">View Gallery</a>
-      </div>
-    `;
+    renderEmptyBookingsState(container);
     return;
   }
 
@@ -153,12 +179,14 @@ const renderStars = () => {
 const attachBookingListeners = () => {
   container.querySelectorAll('.js-book-again').forEach((btn) => {
     btn.addEventListener('click', () => {
-      window.location.href = `flights.html?destination=${btn.dataset.dest}`;
+      handleBookAgain(btn.dataset.dest);
     });
   });
 
   container.querySelectorAll('.js-open-review').forEach((btn) => {
-    btn.addEventListener('click', () => openReviewModal(Number(btn.dataset.destId)));
+    btn.addEventListener('click', () => {
+      handleShareReviewClick(Number(btn.dataset.destId));
+    });
   });
 
   container.querySelectorAll('.js-page').forEach((btn) => {
@@ -240,10 +268,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('submit-review-btn')?.addEventListener('click', async () => {
     if (!currentDestId) return;
     const comment = commentInput?.value.trim();
-    if (!comment) { alert('Please write a comment.'); return; }
+    if (isReviewFeedbackEmpty(comment)) { alert('Please write a comment.'); return; }
 
     try {
-      const res = await apiPost('/reviews', { comment, rating: currentRating, destination_id: currentDestId }, token);
+      const res = await submitReview(comment, currentRating, currentDestId, token);
       if (res.ok) {
         alert('Review submitted successfully!');
         closeReviewModal();

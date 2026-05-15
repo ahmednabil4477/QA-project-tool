@@ -44,6 +44,28 @@ const modal       = document.getElementById('delete-user-modal');
 const textEl      = document.querySelector('.admin-pagination-text');
 const controlsEl  = document.querySelector('.admin-pagination-controls');
 
+// ── Validation & SIQ mapped helpers ──────────────────────────────────────────
+
+const handlePagination = (p) => {
+  currentPage = p;
+  renderPage();
+};
+
+const confirmDeleteUser = async (token) => {
+  if (!pendingDeleteId) return;
+  try {
+    const res = await apiDelete(`/users/${pendingDeleteId}`, token);
+    if (res.ok) {
+      await loadUsers(token);
+    } else {
+      alert('Failed to delete user.');
+    }
+  } catch {
+    alert('Network error.');
+  }
+  closeDeleteModal();
+};
+
 // ── Data ──────────────────────────────────────────────────────────────────────
 
 const loadUsers = async (token) => {
@@ -75,7 +97,7 @@ const renderPage = () => {
     current: currentPage,
     perPage: ITEMS_PER_PAGE,
     label: 'accounts',
-    onPage: (p) => { currentPage = p; renderPage(); },
+    onPage: handlePagination,
   });
 };
 
@@ -110,20 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadUsers(token);
 
   document.getElementById('confirm-delete-user')
-    ?.addEventListener('click', async () => {
-      if (!pendingDeleteId) return;
-      try {
-        const res = await apiDelete(`/users/${pendingDeleteId}`, token);
-        if (res.ok) {
-          await loadUsers(token);
-        } else {
-          alert('Failed to delete user.');
-        }
-      } catch {
-        alert('Network error.');
-      }
-      closeDeleteModal();
-    });
+    ?.addEventListener('click', () => confirmDeleteUser(token));
 
   document.getElementById('cancel-delete-user')
     ?.addEventListener('click', closeDeleteModal);

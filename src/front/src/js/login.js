@@ -1,7 +1,31 @@
 import { API_URL } from './config.js';
 
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const submitLogin = async (email, password) => {
+  return await fetch(`${API_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+};
+
+const isFieldEmpty = (value) => {
+  return !value;
+};
+
+const checkUserRole = (role) => {
+  if (role === 'admin') {
+    window.location.href = 'admin-users.html';
+  } else {
+    window.location.href = 'index.html';
+  }
+};
+
 document.getElementById('loginBtn').addEventListener('click', async () => {
-  // Clear errors
   document.querySelectorAll('.error-msg').forEach(el => {
     el.innerText = '';
     el.style.display = 'none';
@@ -20,23 +44,18 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
     isValid = false;
   };
 
-  if (!email) showError('emailError', 'This field is required');
-  if (!password) showError('passwordError', 'This field is required');
+  if (isFieldEmpty(email)) showError('emailError', 'This field is required');
+  if (isFieldEmpty(password)) showError('passwordError', 'This field is required');
 
   if (!isValid) return;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
+  if (!validateEmail(email)) {
     showError('emailError', 'Invalid email format');
     return;
   }
 
   try {
-    const res = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+    const res = await submitLogin(email, password);
     
     const data = await res.json();
     
@@ -44,11 +63,7 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       
-      if (data.user.role === 'admin') {
-        window.location.href = 'admin-users.html';
-      } else {
-        window.location.href = 'index.html';
-      }
+      checkUserRole(data.user.role);
     } else {
       showError('generalError', 'invalid email or password');
     }

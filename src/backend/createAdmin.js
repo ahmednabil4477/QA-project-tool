@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs');
-const prisma = require('./src/prismaClient'); // Use existing client
+const prisma = require('./src/prismaClient'); 
 
 async function createAdmin() {
-  const email = 'admin@admin.com'; // You can change this
-  const password = '123456789aA@'; // You can change this
+  const email = 'admin@admin.com'; 
+  const password = '123456789aA@'; 
 
   try {
     // 1. Check if admin already exists

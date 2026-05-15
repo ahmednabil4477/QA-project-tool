@@ -45,6 +45,28 @@ const modal       = document.getElementById('delete-booking-modal');
 const textEl      = document.querySelector('.admin-pagination-text');
 const controlsEl  = document.querySelector('.admin-pagination-controls');
 
+// ── Validation & SIQ mapped helpers ──────────────────────────────────────────
+
+const handlePagination = (p) => {
+  currentPage = p;
+  renderPage();
+};
+
+const confirmDeleteBooking = async (token) => {
+  if (!pendingDeleteId) return;
+  try {
+    const res = await apiDelete(`/bookings/${pendingDeleteId}`, token);
+    if (res.ok) {
+      await loadBookings(token);
+    } else {
+      alert('Failed to delete booking.');
+    }
+  } catch {
+    alert('Network error.');
+  }
+  closeDeleteModal();
+};
+
 // ── Data ──────────────────────────────────────────────────────────────────────
 
 const loadBookings = async (token) => {
@@ -76,7 +98,7 @@ const renderPage = () => {
     current: currentPage,
     perPage: ITEMS_PER_PAGE,
     label: 'bookings',
-    onPage: (p) => { currentPage = p; renderPage(); },
+    onPage: handlePagination,
   });
 };
 
@@ -111,20 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadBookings(token);
 
   document.getElementById('confirm-delete-booking')
-    ?.addEventListener('click', async () => {
-      if (!pendingDeleteId) return;
-      try {
-        const res = await apiDelete(`/bookings/${pendingDeleteId}`, token);
-        if (res.ok) {
-          await loadBookings(token);
-        } else {
-          alert('Failed to delete booking.');
-        }
-      } catch {
-        alert('Network error.');
-      }
-      closeDeleteModal();
-    });
+    ?.addEventListener('click', () => confirmDeleteBooking(token));
 
   document.getElementById('cancel-delete-booking')
     ?.addEventListener('click', closeDeleteModal);

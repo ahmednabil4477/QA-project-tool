@@ -2,7 +2,7 @@ import { initPublicNav, getAuth } from './utils/auth.js';
 import { apiGet } from './utils/api.js';
 import { API_URL } from './config.js';
 
-// ── Templates ─────────────────────────────────────────────────────────────────
+
 
 const cityOptionHTML = (city) => `
   <div class="custom-option" data-value="${city}">
@@ -70,7 +70,7 @@ const flightCardHTML = (flight) => `
   </div>
 `;
 
-// ── Validation helpers ────────────────────────────────────────────────────────
+
 
 const showError = (id, msg) => {
   const el = document.getElementById(id);
@@ -84,7 +84,28 @@ const clearErrors = () => {
   });
 };
 
-// ── Dropdown setup ────────────────────────────────────────────────────────────
+const setMinDateToToday = (dateInput) => {
+  if (dateInput) dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+};
+
+const isFieldEmpty = (value) => {
+  return !value;
+};
+
+const isSameCity = (from, to) => {
+  return from && to && from.toLowerCase() === to.toLowerCase();
+};
+
+const navigateToPayment = (flightId) => {
+  window.location.href = `checkout.html?flightId=${flightId}`;
+};
+
+const searchFlights = async (from, to) => {
+  const res = await fetch(`${API_URL}/flights?departureCity=${encodeURIComponent(from)}&arrivalCity=${encodeURIComponent(to)}`);
+  return await res.json();
+};
+
+
 
 const setupDropdown = (dropdownId, triggerId, inputId, menuId) => {
   const dropdown = document.getElementById(dropdownId);
@@ -133,7 +154,7 @@ const renderFlights = (flights) => {
 
   container.querySelectorAll('.js-select-flight').forEach((btn) => {
     btn.addEventListener('click', () => {
-      window.location.href = `checkout.html?flightId=${btn.dataset.id}`;
+      navigateToPayment(btn.dataset.id);
     });
   });
 };
@@ -143,11 +164,11 @@ const renderFlights = (flights) => {
 document.addEventListener('DOMContentLoaded', async () => {
   initPublicNav();
 
-  // Set date minimum to today
+ 
   const dateInput = document.getElementById('flightDate');
-  if (dateInput) dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+  setMinDateToToday(dateInput);
 
-  // Search handler
+  
   document.getElementById('flightSearchBtn')?.addEventListener('click', async () => {
     clearErrors();
 
@@ -156,11 +177,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const date = document.getElementById('flightDate').value;
     let isValid = true;
 
-    if (!from) { showError('flightFromError', 'This field is required'); isValid = false; }
-    if (!to)   { showError('flightToError',   'This field is required'); isValid = false; }
-    if (!date) { showError('flightDateError', 'This field is required'); isValid = false; }
+    if (isFieldEmpty(from)) { showError('flightFromError', 'This field is required'); isValid = false; }
+    if (isFieldEmpty(to))   { showError('flightToError',   'This field is required'); isValid = false; }
+    if (isFieldEmpty(date)) { showError('flightDateError', 'This field is required'); isValid = false; }
 
-    if (from && to && from.toLowerCase() === to.toLowerCase()) {
+    if (isSameCity(from, to)) {
       showError('flightToError', 'Destination cannot be the same as Departure');
       isValid = false;
     }
@@ -169,15 +190,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (container) {
       try {
-        const res = await fetch(`${API_URL}/flights?departureCity=${encodeURIComponent(from)}&arrivalCity=${encodeURIComponent(to)}`);
-        renderFlights(await res.json());
+        const flightsData = await searchFlights(from, to);
+        renderFlights(flightsData);
       } catch {
         container.innerHTML = '<p>Error fetching flights</p>';
       }
     }
   });
 
-  // Load cities for dropdowns
+ 
   if (container) {
     try {
       const [flightsData, destinationsData] = await Promise.all([
