@@ -17,16 +17,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // ── Bug 6: Enforce 18+ age limit via max attribute on DOB ─────────────────
+  // ── Bug 6: Block future dates on DOB picker; 18+ enforced on submit ──────
   const dobInput = document.getElementById('dob');
   if (dobInput) {
-    const today    = new Date();
-    const maxYear  = today.getFullYear() - 18;
-    const maxMonth = String(today.getMonth() + 1).padStart(2, '0');
-    const maxDay   = String(today.getDate()).padStart(2, '0');
-    // max is set to exactly 18 years ago — the browser date picker
-    // will NOT allow selecting any date after this.
-    dobInput.setAttribute('max', `${maxYear}-${maxMonth}-${maxDay}`);
+    const today = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
+    dobInput.setAttribute('max', today);
   }
 
   // ── Bug 5: Set min on flight date to prevent past-date keyboard entry ──────
