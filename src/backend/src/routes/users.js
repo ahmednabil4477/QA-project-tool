@@ -1,8 +1,8 @@
 const express = require('express');
-const prisma   = require('../prismaClient');
+const prisma = require('../prismaClient');
 const { verifyToken, verifyAdmin } = require('../middleware/auth');
 const { parseId, handleError, requireRecord } = require('../utils/helpers');
-const router   = express.Router();
+const router = express.Router();
 
 // GET /users — admin: list all users (safe fields only)
 router.get('/', verifyAdmin, async (req, res) => {
@@ -24,7 +24,7 @@ router.get('/:id', verifyToken, async (req, res) => {
     }
     try {
         const user = await prisma.user.findUnique({
-            where:  { id },
+            where: { id },
             select: { id: true, firstName: true, lastName: true, email: true }
         });
         if (!requireRecord(res, user, 'User')) return;
@@ -45,28 +45,5 @@ router.delete('/:id', verifyAdmin, async (req, res) => {
     }
 });
 
-// PUT /users/:id — owner or admin: update profile
-router.put('/:id', verifyToken, async (req, res) => {
-    const id = parseId(req.params.id);
-    if (req.user.id !== id && req.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Access denied' });
-    }
-    const { firstName, lastName, email } = req.body;
-    try {
-        const updated = await prisma.user.update({
-            where:  { id },
-            data:   {
-                ...(firstName && { firstName }),
-                ...(lastName  && { lastName }),
-                ...(email     && { email }),
-            },
-            select: { id: true, firstName: true, lastName: true, email: true }
-        });
-        res.json(updated);
-    } catch (err) {
-        if (err.code === 'P2025') return res.status(404).json({ message: 'User not found' });
-        handleError(res, err);
-    }
-});
 
 module.exports = router;
