@@ -87,6 +87,16 @@ const clearErrors = () => {
 const setMinDateToToday = (dateInput) => {
   if (dateInput) dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
 };
+const flightDateInput = document.getElementById('flightDate');
+
+
+flightDateInput.addEventListener('keydown', (e) => {
+  e.preventDefault();
+});
+
+flightDateInput.addEventListener('paste', (e) => {
+  e.preventDefault();
+});
 
 const isFieldEmpty = (value) => {
   return !value;
@@ -109,9 +119,9 @@ const searchFlights = async (from, to) => {
 
 const setupDropdown = (dropdownId, triggerId, inputId, menuId) => {
   const dropdown = document.getElementById(dropdownId);
-  const trigger  = document.getElementById(triggerId);
-  const input    = document.getElementById(inputId);
-  const menu     = document.getElementById(menuId);
+  const trigger = document.getElementById(triggerId);
+  const input = document.getElementById(inputId);
+  const menu = document.getElementById(menuId);
 
   if (!dropdown || !trigger || !input || !menu) return;
 
@@ -126,7 +136,7 @@ const setupDropdown = (dropdownId, triggerId, inputId, menuId) => {
   menu.querySelectorAll('.custom-option').forEach((option) => {
     option.addEventListener('click', (e) => {
       e.stopPropagation();
-      input.value    = option.dataset.value;
+      input.value = option.dataset.value;
       trigger.textContent = option.dataset.value;
       dropdown.classList.remove('open');
     });
@@ -164,21 +174,21 @@ const renderFlights = (flights) => {
 document.addEventListener('DOMContentLoaded', async () => {
   initPublicNav();
 
- 
+
   const dateInput = document.getElementById('flightDate');
   setMinDateToToday(dateInput);
 
-  
+
   document.getElementById('flightSearchBtn')?.addEventListener('click', async () => {
     clearErrors();
 
     const from = document.getElementById('flightFrom').value.trim();
-    const to   = document.getElementById('flightTo').value.trim();
+    const to = document.getElementById('flightTo').value.trim();
     const date = document.getElementById('flightDate').value;
     let isValid = true;
 
     if (isFieldEmpty(from)) { showError('flightFromError', 'This field is required'); isValid = false; }
-    if (isFieldEmpty(to))   { showError('flightToError',   'This field is required'); isValid = false; }
+    if (isFieldEmpty(to)) { showError('flightToError', 'This field is required'); isValid = false; }
     if (isFieldEmpty(date)) { showError('flightDateError', 'This field is required'); isValid = false; }
 
     if (isSameCity(from, to)) {
@@ -198,7 +208,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
- 
+
   if (container) {
     try {
       const [flightsData, destinationsData] = await Promise.all([
@@ -214,20 +224,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       ].sort();
 
       const fromMenu = document.getElementById('flightFromMenu');
-      const toMenu   = document.getElementById('flightToMenu');
-      const html     = allCities.map(cityOptionHTML).join('');
+      const toMenu = document.getElementById('flightToMenu');
+      const html = allCities.map(cityOptionHTML).join('');
       if (fromMenu) fromMenu.innerHTML = html;
-      if (toMenu)   toMenu.innerHTML   = html;
+      if (toMenu) toMenu.innerHTML = html;
 
       setupDropdown('dropdownFrom', 'flightFromTrigger', 'flightFrom', 'flightFromMenu');
-      setupDropdown('dropdownTo',   'flightToTrigger',   'flightTo',   'flightToMenu');
+      setupDropdown('dropdownTo', 'flightToTrigger', 'flightTo', 'flightToMenu');
 
       // Pre-fill destination from URL param (e.g. coming from destination page)
       const destParam = new URLSearchParams(window.location.search).get('destination');
       if (destParam) {
-        const flightToInput   = document.getElementById('flightTo');
+        const flightToInput = document.getElementById('flightTo');
         const flightToTrigger = document.getElementById('flightToTrigger');
-        if (flightToInput)   flightToInput.value       = destParam;
+        if (flightToInput) flightToInput.value = destParam;
         if (flightToTrigger) flightToTrigger.textContent = destParam;
       }
 
