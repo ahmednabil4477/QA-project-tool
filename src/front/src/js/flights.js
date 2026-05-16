@@ -91,6 +91,7 @@ const flightDateInput = document.getElementById('flightDate');
 
 
 flightDateInput.addEventListener('keydown', (e) => {
+  if (e.key === "Tab") return;
   e.preventDefault();
 });
 
